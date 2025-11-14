@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NullSector - 神秘工作室</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        :root {
+            --primary-color: #1a1a1a;
+            --secondary-color: #0a0a0a;
+            --accent-color: #3a3a3a;
+            --text-color: #e0e0e0;
+            --highlight-color: #8a8a8a;
+        }
+        
+        body {
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(28, 28, 28, 0.03) 0%, rgba(28, 28, 28, 0.03) 20%, transparent 20%, transparent 100%),
+                radial-gradient(circle at 90% 80%, rgba(28, 28, 28, 0.03) 0%, rgba(28, 28, 28, 0.03) 20%, transparent 20%, transparent 100%);
+            background-size: 10px 10px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* 导航栏样式 */
+        header {
+            padding: 30px 0;
+            position: relative;
+            z-index: 100;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .logo {
+            font-size: 2.2rem;
+            font-weight: 300;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            text-align: center;
+            color: #fff;
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .logo::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #fff, transparent);
+        }
+        
+        /* 主内容区样式 */
+        .hero {
+            min-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 60px 0;
+            position: relative;
+        }
+        
+        .hero h1 {
+            font-size: 4rem;
+            font-weight: 300;
+            margin-bottom: 20px;
+            letter-spacing: 8px;
+            text-transform: uppercase;
+            opacity: 0;
+            animation: fadeIn 2s ease forwards;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin-bottom: 40px;
+            opacity: 0;
+            animation: fadeIn 2s ease 0.5s forwards;
+            color: #aaa;
+        }
+        
+        .contact-info {
+            margin-top: 40px;
+            opacity: 0;
+            animation: fadeIn 2s ease 1s forwards;
+        }
+        
+        .contact-info p {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+        
+        .qq-link {
+            display: inline-block;
+            padding: 12px 25px;
+            background: transparent;
+            border: 1px solid #444;
+            color: #e0e0e0;
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+        
+        .qq-link:hover {
+            border-color: #888;
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        /* 关于我们部分 */
+        .about {
+            padding: 100px 0;
+            background-color: var(--primary-color);
+        }
+        
+        .section-title {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 60px;
+            font-weight: 300;
+            letter-spacing: 3px;
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 1px;
+            background: var(--highlight-color);
+        }
+        
+        .about-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 40px;
+        }
+        
+        .about-text {
+            flex: 1;
+            min-width: 300px;
+            max-width: 600px;
+        }
+        
+        .about-text p {
+            margin-bottom: 20px;
+            color: #aaa;
+            line-height: 1.8;
+        }
+        
+        /* 服务部分 */
+        .services {
+            padding: 100px 0;
+        }
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .service-card {
+            background-color: rgba(255, 255, 255, 0.03);
+            padding: 40px 30px;
+            border-radius: 5px;
+            text-align: center;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .service-card:hover {
+            transform: translateY(-10px);
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+        
+        .service-icon {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: var(--highlight-color);
+        }
+        
+        .service-title {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            font-weight: 400;
+        }
+        
+        .service-description {
+            color: #aaa;
+            line-height: 1.6;
+        }
+        
+        /* 页脚 */
+        footer {
+            background-color: var(--secondary-color);
+            padding: 60px 0 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-section {
+            flex: 1;
+            min-width: 250px;
+        }
+        
+        .footer-title {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            font-weight: 400;
+            letter-spacing: 1px;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: #aaa;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: var(--text-color);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        /* 动画效果 */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* 浮动元素 */
+        .floating-elements {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .floating-element {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background-color: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            animation: float 15s infinite linear;
+        }
+        
+        .floating-element:nth-child(1) {
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+        
+        .floating-element:nth-child(2) {
+            top: 60%;
+            left: 80%;
+            animation-delay: 2s;
+        }
+        
+        .floating-element:nth-child(3) {
+            top: 40%;
+            left: 30%;
+            animation-delay: 4s;
+        }
+        
+        .floating-element:nth-child(4) {
+            top: 80%;
+            left: 60%;
+            animation-delay: 6s;
+        }
+        
+        .floating-element:nth-child(5) {
+            top: 30%;
+            left: 90%;
+            animation-delay: 8s;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(0) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) translateX(50px);
+                opacity: 0;
+            }
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+                letter-spacing: 5px;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+                padding: 0 20px;
+            }
+            
+            .logo {
+                font-size: 1.8rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">NullSector</div>
+        </header>
+        
+        <main>
+            <section class="hero">
+                <h1>NullSector</h1>
+                <p>一个神秘而专注的工作室，致力于创造独特而卓越的数字体验。我们人数不多，但每一位成员都是各自领域的专家。</p>
+                
+                <div class="contact-info">
+                    <p>联系我们</p>
+                    <a href="http://wpa.qq.com/msgrd?v=3&uin=2734952662&site=qq&menu=yes" class="qq-link" target="_blank">QQ: 2734952662</a>
+                </div>
+            </section>
+            
+            <section class="about">
+                <h2 class="section-title">关于我们</h2>
+                <div class="about-content">
+                    <div class="about-text">
+                        <p>NullSector工作室成立于2020年，是一个小而精的创意团队。我们专注于数字领域的创新与突破，为客户提供独特而高效的解决方案。</p>
+                        <p>我们的团队由资深设计师、开发者和策略专家组成，每位成员都在各自领域有着深厚的专业知识和丰富的实践经验。</p>
+                        <p>我们相信小而精的团队能够提供更专注、更个性化的服务，确保每个项目都能得到充分的关注和专业的执行。</p>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="services">
+                <h2 class="section-title">我们的服务</h2>
+                <div class="services-grid">
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <h3 class="service-title">网站开发</h3>
+                        <p class="service-description">定制化网站开发，从概念到实现，我们打造独特而高效的在线体验。</p>
+                    </div>
+                    
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-paint-brush"></i>
+                        </div>
+                        <h3 class="service-title">UI/UX设计</h3>
+                        <p class="service-description">以用户为中心的设计方法，创造直观、美观且功能强大的界面。</p>
+                    </div>
+                    
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <h3 class="service-title">移动应用</h3>
+                        <p class="service-description">跨平台移动应用开发，提供流畅的用户体验和卓越的性能。</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+        
+        <footer>
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3 class="footer-title">NullSector</h3>
+                    <p style="color: #aaa;">一个神秘而专注的工作室，致力于创造独特而卓越的数字体验。</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3 class="footer-title">快速链接</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">首页</a></li>
+                        <li><a href="#about">关于我们</a></li>
+                        <li><a href="#services">我们的服务</a></li>
+                        <li><a href="#contact">联系我们</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3 class="footer-title">联系我们</h3>
+                    <ul class="footer-links">
+                        <li><i class="fas fa-comment"></i> QQ: 2734952662</li>
+                        <li><i class="fas fa-envelope"></i> contact@nullsector.com</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2023 NullSector工作室. 保留所有权利.</p>
+            </div>
+        </footer>
+    </div>
+    
+    <div class="floating-elements">
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+    </div>
+    
+    <script>
+        // 添加页面加载后的交互效果
+        document.addEventListener('DOMContentLoaded', function() {
+            // 鼠标移动效果
+            document.addEventListener('mousemove', function(e) {
+                const floatingElements = document.querySelectorAll('.floating-element');
+                floatingElements.forEach(element => {
+                    const speed = 0.02;
+                    const x = (window.innerWidth - e.pageX * speed) / 100;
+                    const y = (window.innerHeight - e.pageY * speed) / 100;
+                    element.style.transform = `translateX(${x}px) translateY(${y}px)`;
+                });
+            });
+            
+            // 添加点击效果
+            document.querySelector('.qq-link').addEventListener('click', function() {
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = 'scale(1)';
+                }, 150);
+            });
+            
+            // 滚动动画
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+            
+            // 观察所有服务卡片
+            document.querySelectorAll('.service-card').forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                observer.observe(card);
+            });
+        });
+    </script>
+</body>
+</html>
+       
